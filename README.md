@@ -5,25 +5,25 @@ VidStreamer.js: A simple streamer for Flash and other videos (and other files to
 
 To make a standalone video streamer, try something like this
 
-	```javascript
-	var http = require("http");
-	var vidStreamer = require("vid-streamer");
+```javascript
+var http = require("http");
+var vidStreamer = require("vid-streamer");
 
-	var app = http.createServer(vidStreamer);
-	app.listen(3000);
-	console.log("VidStreamer.js up and running on port 3000");
-	```
+var app = http.createServer(vidStreamer);
+app.listen(3000);
+console.log("VidStreamer.js up and running on port 3000");
+```
 
 And here's an example of including it in an Express app
 
-	```javascript
-	var app = require("express").createServer();
-	var vidStreamer = require("vid-streamer");
+```javascript
+var app = require("express").createServer();
+var vidStreamer = require("vid-streamer");
 
-	app.get("/videos/", vidStreamer);
+app.get("/videos/", vidStreamer);
 
-	app.listen(3000);
-	```
+app.listen(3000);
+```
 
 Settings
 --------
@@ -39,28 +39,29 @@ There are a few things to twiddle in `/config/vidStreamer.json`. (Please rename 
 
 Standalone example
 
-	```javascript
-	{
-		"mode": "development",
-		"forceDownload": false,
-		"random": false,
-		"rootFolder": "/path/to/videos/",
-		"rootPath": "videos/",
-		"server": "VidStreamer.js/0.1"
-	}
-	```
+```javascript
+{
+	"mode": "development",
+	"forceDownload": false,
+	"random": false,
+	"rootFolder": "/path/to/videos/",
+	"rootPath": "videos/",
+	"server": "VidStreamer.js/0.1"
+}
+```
+
 Example for Express. (Note that rootPath should be relative to the root URL of your Express app.)
 
-	```javascript
-	{
-		"mode": "development",
-		"forceDownload": false,
-		"random": false,
-		"rootFolder": "/path/to/express/public/",
-		"rootPath": "",
-		"server": "VidStreamer.js/0.1"
-	}
-	```
+```javascript
+{
+	"mode": "development",
+	"forceDownload": false,
+	"random": false,
+	"rootFolder": "/path/to/express/public/",
+	"rootPath": "",
+	"server": "VidStreamer.js/0.1"
+}
+```
 
 Serving random files
 --------------------
