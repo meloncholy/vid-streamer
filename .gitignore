@@ -11,5 +11,7 @@ pids
 logs
 results
 
-node_modules
 npm-debug.log
+
+vidStreamer josie.json
+vidStreamer.json
