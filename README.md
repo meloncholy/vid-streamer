@@ -5,7 +5,7 @@ VidStreamer.js: A simple streamer for Flash and other videos (and other files to
 
 To make a standalone video streamer, try something like this
 
-	```JavaScript
+	```javascript
 	var http = require("http");
 	var vidStreamer = require("vid-streamer");
 
@@ -16,7 +16,7 @@ To make a standalone video streamer, try something like this
 
 And here's an example of including it in an Express app
 
-	```JavaScript
+	```javascript
 	var app = require("express").createServer();
 	var vidStreamer = require("vid-streamer");
 
@@ -39,7 +39,7 @@ There are a few things to twiddle in `/config/vidStreamer.json`. (Please rename 
 
 Standalone example
 
-	```JavaScript
+	```javascript
 	{
 		"mode": "development",
 		"forceDownload": false,
@@ -51,7 +51,7 @@ Standalone example
 	```
 Example for Express. (Note that rootPath should be relative to the root URL of your Express app.)
 
-	```JavaScript
+	```javascript
 	{
 		"mode": "development",
 		"forceDownload": false,
@@ -81,7 +81,7 @@ I hadn't really thought about how to write video streamer before, so [Devendra T
 Legal fun
 ---------
 
-Copyright &copy; 2012 Andrew Weeks [http://meloncholy.com](http://meloncholy.com)
+Copyright &copy; 2012 Andrew Weeks http://meloncholy.com
 
 VidStreamer.js is licensed under the [MIT licence](http://meloncholy.com/licence/).
 
