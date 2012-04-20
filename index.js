@@ -3,7 +3,7 @@
 *
 * Copyright (c) 2012 Andrew Weeks http://meloncholy.com
 * Licensed under the MIT licence. See http://meloncholy.com/licence
-* Version 0.1
+* Version 0.1.1
 */
 
 "use strict";
@@ -67,38 +67,39 @@ var vidStreamer = function (req, res) {
 	var range = typeof req.headers.range === "string" ? req.headers.range : undefined;
 	var reqUrl = url.parse(req.url, true);
 
-	info.file = typeof reqUrl.pathname === "string" ? reqUrl.pathname.substring(1) : undefined;
+	info.path = typeof reqUrl.pathname === "string" ? reqUrl.pathname.substring(1) : undefined;
 
 	// Security checks. Word.
-	if (!info.file) {
+	if (!info.path) {
 		handler.emit("badFile", res);
 		return false;
-	} else if (info.file.search(/^\.\.?|^\/|^\\/) !== -1) {
-		handler.emit("security", res, { message: info.file });
+	} else if (info.path.search(/^\.\.?|^\/|^\\/) !== -1) {
+		handler.emit("security", res, { message: info.path });
 		return false;
-	} else if (info.file.substring(0, settings.rootPath.length) !== settings.rootPath) {
-		// This will trigger if wrong slashes are used.
-		handler.emit("security", res, { message: info.file });
+	} else if (info.path.substring(0, settings.rootPath.length) !== settings.rootPath) {
+		// This will trigger if wrong slashes are used. Change?
+		handler.emit("security", res, { message: info.path });
 		return false;
-	}else if ((info.mime = mimeTypes[info.file.match(/\..+?$/)]) === undefined) {
-		handler.emit("badMime", res, { message: info.file });
+	}else if ((info.mime = mimeTypes[info.path.match(/\..+?$/)]) === undefined) {
+		handler.emit("badMime", res, { message: info.path });
 		return false;
 	}
 
-	info.file = info.file.substring(settings.rootPath.length);
+	info.path = info.path.substring(settings.rootPath.length);
+	info.file = info.path.match(/(.*[\/|\\])?(.+?)$/)[2];
 
 	// Want that file or a consisten-but-random one instead (for demos)?
 	if (settings.random) {
 		if (!randomFile(info)) {
-			handler.emit("noRandomFiles", res, { message: info.file });
+			handler.emit("noRandomFiles", res, { message: info.path });
 			return false;
 		}
 	} else {
-		info.file = settings.rootFolder + info.file;
+		info.path = settings.rootFolder + info.path;
 	}
 
 	try {
-		stat = fs.statSync(info.file);
+		stat = fs.statSync(info.path);
 
 		if (!stat.isFile()) {
 			handler.emit("badFile", res);
@@ -127,7 +128,7 @@ var vidStreamer = function (req, res) {
 		info.end = isNumber(reqUrl.query.end) && reqUrl.query.end > info.start && reqUrl.query.end <= info.end ? reqUrl.query.end - 0 : info.end;
 	}
 
-	info.length = info.end - info.start;
+	info.length = info.end - info.start + 1;
 
 	downloadHeader(res, info);
 
@@ -135,7 +136,7 @@ var vidStreamer = function (req, res) {
 	if (info.start > 0 && info.mime === "video/x-flv") {
 		res.write("FLV" + pack("CCNN", 1, 5, 9, 9));
 	}
-	stream = fs.createReadStream(info.file, { flags: "r", start: info.start, end: info.end });
+	stream = fs.createReadStream(info.path, { flags: "r", start: info.start, end: info.end });
 	stream.pipe(res);
 	return true;
 };
@@ -146,17 +147,17 @@ var randomFile = function (info) {
 	var randomSource;
 	var randomPath;
 	var randomFiles;
-	var extn = info.file.match(/\..+?$/);
+	var extn = info.path.match(/\..+?$/);
 
 	// No extension given
 	if (extn === null) return false;
 	extn = extn[0];
 
 	// See if there's a path
-	fileParts = info.file.match(/(.*[\/|\\])?(.+?)$/);
+	fileParts = info.path.match(/(.*[\/|\\])?(.+?)$/);
 	if (fileParts[1] === undefined) {
 		randomPath = settings.rootFolder;
-		randomSource = info.file;
+		randomSource = info.path;
 	} else {
 		randomPath = settings.rootFolder + fileParts[1];
 		randomSource = fileParts[2];
@@ -175,7 +176,7 @@ var randomFile = function (info) {
 	}
 	randomFiles = randomFiles.filter(function (el) { return el.substr(-extn.length) === extn; });
 	if (randomFiles.length === 0) return false;
-	info.file = randomPath + randomFiles[fileCode % randomFiles.length];
+	info.path = randomPath + randomFiles[fileCode % randomFiles.length];
 	return true;
 };
 
@@ -192,18 +193,15 @@ var downloadHeader = function (res, info) {
 			Expires: 0,
 			"Cache-Control": "must-revalidate, post-check=0, pre-check=0",
 			//"Cache-Control": "private",
-			//"Content-Type": "application/force-download",
-			//"Content-Type": "application/octet-stream",
-			//"Content-Type": "application/download",
 			"Content-Type": info.mime,
-			"Content-Disposition": "attachment; file_name=" + info.file + ";"
+			"Content-Disposition": "attachment; filename=" + info.file + ";"
 		};
 	} else {
 		header = {
 			"Cache-Control": "public",
 			Connection: "keep-alive",
 			"Content-Type": info.mime,
-			"Content-Disposition": "inline; file_name=" + info.file + ";"
+			"Content-Disposition": "inline; filename=" + info.file + ";"
 		};
 
 		if (info.rangeRequest) {
@@ -211,7 +209,7 @@ var downloadHeader = function (res, info) {
 			code = 206;
 			header.Status = "206 Partial Content";
 			header["Accept-Ranges"] = "bytes";
-			header["Content-Range"] = "bytes " + info.length + "/" + info.size;
+			header["Content-Range"] = "bytes " + info.start + "-" + info.end + "/" + info.size;
 		}
 	}
 
