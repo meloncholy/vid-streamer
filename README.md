@@ -25,6 +25,11 @@ app.get("/videos/", vidStreamer);
 app.listen(3000);
 ```
 
+Installation
+------------
+
+You should be able to get it via `npm install vid-streamer`, or otherwise through Git of course. 
+
 Settings
 --------
 

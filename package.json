@@ -1,0 +1,15 @@
+{
+  "name": "vid-streamer",
+  "description": "VidStreamer.js: A simple streamer for Flash and other videos. Supports HTTP pseudostreaming and works with JW Player's bitrate switching.",
+  "version": "0.1.0",
+  "author": "Andrew Weeks <andrew@meloncholy.com>",
+  "dependencies": {
+    "konphyg": "1.0.x"
+  },
+  "keywords": ["video", "streamer", "streaming", "pseudostreaming", "flash"],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/meloncholy/vid-streamer.git"
+  },
+  "main": "index"
+}
