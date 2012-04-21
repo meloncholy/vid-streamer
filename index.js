@@ -3,7 +3,7 @@
 *
 * Copyright (c) 2012 Andrew Weeks http://meloncholy.com
 * Licensed under the MIT licence. See http://meloncholy.com/licence
-* Version 0.1.1
+* Version 0.1.2
 */
 
 "use strict";
@@ -57,7 +57,8 @@ var mimeTypes = {
 	".doc": "application/msword",
 	".vcf": "text/x-vcard",
 	".vrml": "x-world/x-vrml",
-	".zip": "application/zip"
+	".zip": "application/zip",
+	".webm": "video/webm"
 };
 
 var vidStreamer = function (req, res) {
@@ -116,7 +117,7 @@ var vidStreamer = function (req, res) {
 	info.modified = stat.mtime;
 	info.rangeRequest = false;
 
-	if (range !== undefined && (range = range.match(/bytes=(.+)-(.+)/)) !== null) {
+	if (range !== undefined && (range = range.match(/bytes=(.+)-(.+)?/)) !== null) {
 		// Check range contains numbers and they fit in the file.
 		// Make sure info.start & info.end are numbers (not strings) or stream.pipe errors out if start > 0.
 		info.start = isNumber(range[1]) && range[1] >= 0 && range[1] < info.end ? range[1] - 0 : info.start;
