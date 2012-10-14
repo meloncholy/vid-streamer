@@ -25,6 +25,21 @@ app.get("/videos/", vidStreamer);
 app.listen(3000);
 ```
 
+If you want to pass in the settings instead via your app, try this (thanks to [Will Laurance](https://github.com/meloncholy/vid-streamer/issues/3)). Settings given will be merged with the defaults (see below), so you don't need to supply them all.
+
+```javascript
+var http = require("http");
+var vidStreamer = require("vid-streamer");
+
+var newSettings = {
+	rootPath: "download-clips/",
+	forceDownload: true
+}
+
+var app = http.createServer(vidStreamer.settings(newSettings));
+app.listen(3000);
+```
+
 Installation
 ------------
 
@@ -51,7 +66,7 @@ Standalone example
 	"random": false,
 	"rootFolder": "/path/to/videos/",
 	"rootPath": "videos/",
-	"server": "VidStreamer.js/0.1"
+	"server": "VidStreamer.js/0.1.3"
 }
 ```
 
@@ -64,7 +79,7 @@ Example for Express. (Note that rootPath should be relative to the root URL of y
 	"random": false,
 	"rootFolder": "/path/to/express/public/",
 	"rootPath": "",
-	"server": "VidStreamer.js/0.1"
+	"server": "VidStreamer.js/0.1.3"
 }
 ```
 

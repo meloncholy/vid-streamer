@@ -58,7 +58,9 @@ var mimeTypes = {
 	".vcf": "text/x-vcard",
 	".vrml": "x-world/x-vrml",
 	".zip": "application/zip",
-	".webm": "video/webm"
+	".webm": "video/webm",
+	".m3u8": "application/x-mpegurl",
+	".ts": "video/mp2t"
 };
 
 var vidStreamer = function (req, res) {
@@ -140,6 +142,11 @@ var vidStreamer = function (req, res) {
 	stream = fs.createReadStream(info.path, { flags: "r", start: info.start, end: info.end });
 	stream.pipe(res);
 	return true;
+};
+
+vidStreamer.settings = function (s) {
+	for (var prop in s) { settings[prop] = s[prop]; }
+	return vidStreamer;
 };
 
 var randomFile = function (info) {
