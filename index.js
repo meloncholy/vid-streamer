@@ -11,7 +11,12 @@
 var fs = require("fs");
 var url = require("url");
 var events = require("events");
-var settings = require("konphyg")(__dirname + "/config/")("vidStreamer");
+var settings = {};
+try {
+  settings = require("konphyg")(__dirname + "/config/")("vidStreamer");
+} catch (e) {
+  console.error(e);
+}
 
 var handler = new events.EventEmitter();
 
