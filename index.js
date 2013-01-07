@@ -3,7 +3,7 @@
 *
 * Copyright (c) 2012 Andrew Weeks http://meloncholy.com
 * Licensed under the MIT licence. See http://meloncholy.com/licence
-* Version 0.1.2
+* Version 0.1.3
 */
 
 "use strict";
