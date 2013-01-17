@@ -3,7 +3,7 @@
 *
 * Copyright (c) 2012 Andrew Weeks http://meloncholy.com
 * Licensed under the MIT licence. See http://meloncholy.com/licence
-* Version 0.1.3
+* Version 0.1.4
 */
 
 "use strict";
@@ -72,10 +72,21 @@ var vidStreamer = function (req, res) {
 	var stream;
 	var stat;
 	var info = {};
+	var ext;
 	var range = typeof req.headers.range === "string" ? req.headers.range : undefined;
 	var reqUrl = url.parse(req.url, true);
 
 	info.path = typeof reqUrl.pathname === "string" ? reqUrl.pathname.substring(1) : undefined;
+	
+	if (info.path) {
+		try {
+			info.path = decodeURIComponent(info.path);
+		} catch (exception) {
+			// Can throw URI malformed exception.
+			handler.emit("badRequest", res);
+			return false;
+		}
+	}
 
 	// Security checks. Word.
 	if (!info.path) {
@@ -88,9 +99,13 @@ var vidStreamer = function (req, res) {
 		// This will trigger if wrong slashes are used. Change?
 		handler.emit("security", res, { message: info.path });
 		return false;
-	}else if ((info.mime = mimeTypes[info.path.match(/\..+?$/)]) === undefined) {
-		handler.emit("badMime", res, { message: info.path });
-		return false;
+	} else {
+		ext = info.path.match(/.*(\..+?)$/);
+
+		if (ext === null || ext.length !== 2 || (info.mime = mimeTypes[ext[1].toLowerCase()]) === undefined) {
+			handler.emit("badMime", res, { message: info.path });
+			return false;
+		}
 	}
 
 	info.path = info.path.substring(settings.rootPath.length);
@@ -309,6 +324,17 @@ handler.on("badMime", function (res, e) {
 		"<p>You're not allowed to download files of that type.</p>" +
 		"</body></html>");
 	console.error("403 Bad MIME - " + (e ? e.message : ""));
+});
+
+handler.on("badRequest", function (res, e) {
+	errorHeader(res, 400);
+	res.end("<!DOCTYPE html><html lang=\"en\">" +
+		"<head><title>400 Bad request</title></head>" +
+		"<body>" +
+		"<h1>Wut?</h1>" +
+		"<p>I couldn't understand that I'm afraid; the syntax appears malformed.</p>" +
+		"</body></html>");
+	console.error("400 Bad Request - " + (e ? e.message : ""));
 });
 
 handler.on("noRandomFiles", function (res, e) {

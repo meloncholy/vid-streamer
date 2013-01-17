@@ -66,7 +66,7 @@ Standalone example
 	"random": false,
 	"rootFolder": "/path/to/videos/",
 	"rootPath": "videos/",
-	"server": "VidStreamer.js/0.1.3"
+	"server": "VidStreamer.js/0.1.4"
 }
 ```
 
@@ -79,7 +79,7 @@ Example for Express. (Note that rootPath should be relative to the root URL of y
 	"random": false,
 	"rootFolder": "/path/to/express/public/",
 	"rootPath": "",
-	"server": "VidStreamer.js/0.1.3"
+	"server": "VidStreamer.js/0.1.4"
 }
 ```
 
