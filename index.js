@@ -227,7 +227,7 @@ var downloadHeader = function (res, info) {
 		};
 	} else {
 		header = {
-			"Cache-Control": "public",
+			"Cache-Control": "public; max-age=" + settings.maxAge,
 			Connection: "keep-alive",
 			"Content-Type": info.mime,
 			"Content-Disposition": "inline; filename=" + info.file + ";"
