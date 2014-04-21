@@ -77,7 +77,10 @@ var vidStreamer = function (req, res) {
 	var range = typeof req.headers.range === "string" ? req.headers.range : undefined;
 	var reqUrl = url.parse(req.url, true);
 
-	info.path = typeof reqUrl.pathname === "string" ? reqUrl.pathname.substring(1) : undefined;
+	if(typeof settings.pathBuilder === "function")
+		info.path = settings.pathBuilder(req);
+	else
+		info.path = typeof reqUrl.pathname === "string" ? reqUrl.pathname.substring(1) : undefined;
 	
 	if (info.path) {
 		try {
