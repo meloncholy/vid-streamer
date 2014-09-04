@@ -230,14 +230,14 @@ var downloadHeader = function (res, info) {
 			"Cache-Control": "public; max-age=" + settings.maxAge,
 			Connection: "keep-alive",
 			"Content-Type": info.mime,
-			"Content-Disposition": "inline; filename=" + info.file + ";"
+			"Content-Disposition": "inline; filename=" + info.file + ";",
+			"Accept-Ranges": "bytes"
 		};
 
 		if (info.rangeRequest) {
 			// Partial http response
 			code = 206;
 			header.Status = "206 Partial Content";
-			header["Accept-Ranges"] = "bytes";
 			header["Content-Range"] = "bytes " + info.start + "-" + info.end + "/" + info.size;
 		}
 	}
