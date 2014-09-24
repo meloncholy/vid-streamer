@@ -4,6 +4,7 @@
   "version": "0.1.4",
   "author": "Andrew Weeks <andrew@meloncholy.com>",
   "dependencies": {
+    "throttle": "^1.0.3"
   },
   "keywords": ["video", "streamer", "streaming", "pseudostreaming", "flash"],
   "repository": {

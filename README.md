@@ -55,7 +55,8 @@ There are a few things to twiddle in `/config/vidStreamer.json`. (Please rename 
 - **random** - Show a random file instead of the one named (see below).
 - **rootFolder** - The root folder from which files are returned. Accessing subfolders is possible by putting them in the path. 
 - **rootPath** - The path assumed to match up with the root folder. 
-- **server** - Server string returned in the header. 
+- **server** - Server string returned in the header.
+- **throttle** - Allows you to [throttle](https://github.com/TooTallNate/node-throttle#node-throttle) (limit) server bandwidth (bytes/second), cool for dev where
 
 Standalone example
 
