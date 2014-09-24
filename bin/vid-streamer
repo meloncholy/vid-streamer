@@ -20,7 +20,7 @@ program
 settings = {
   forceDownload: program.forceDownload,
   random: program.random,
-  rootFolder: program.rootFolder,
+  rootFolder: path.resolve(process.cwd(), program.rootFolder) + '/',
   rootPath: program.rootPath,
   server: program.server,
   throttle: parseInt(program.throttle)
@@ -31,3 +31,4 @@ http
   .listen(program.port);
 
 console.log('Streaming server is listening on 0.0.0.0:%s', program.port);
+console.log('Serving videos from %s', settings.rootFolder);
