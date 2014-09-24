@@ -4,7 +4,6 @@
   "version": "0.1.4",
   "author": "Andrew Weeks <andrew@meloncholy.com>",
   "dependencies": {
-    "konphyg": "1.0.x"
   },
   "keywords": ["video", "streamer", "streaming", "pseudostreaming", "flash"],
   "repository": {
