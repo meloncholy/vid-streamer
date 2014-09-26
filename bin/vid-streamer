@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var http = require('http');
+var path = require('path');
+var vidStreamer = require('../');
+var settings;
+
+program
+  .version(require('../package.json').version)
+  .option('-f, --forceDownload', 'Tell the browser to show a save file dialog', false)
+  .option('-r, --random', 'Show a random file instead of the one named', false)
+  .option('--rootFolder [path]', 'The root folder from which files are returned', '/path/to/videos/')
+  .option('--rootPath [path]', 'The path assumed to match up with the root folder', 'videos/')
+  .option('-s, --server [name]', 'Server string returned in the header', 'VidStreamer.js/0.1.4')
+  .option('-t, --throttle [bytes/s]', 'Throttle server bandwidth in bytes/s', false)
+  .option('-P, --port [port]', 'Port to use, defaults to 5000', 5000)
+  .parse(process.argv);
+
+settings = {
+  forceDownload: program.forceDownload,
+  random: program.random,
+  rootFolder: path.resolve(process.cwd(), program.rootFolder) + '/',
+  rootPath: program.rootPath,
+  server: program.server,
+  throttle: parseInt(program.throttle)
+}
+
+http
+  .createServer(vidStreamer.settings(settings))
+  .listen(program.port);
+
+console.log('Streaming server is listening on 0.0.0.0:%s', program.port);
+console.log('Serving videos from %s', settings.rootFolder);

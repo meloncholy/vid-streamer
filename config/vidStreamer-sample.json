@@ -5,5 +5,6 @@
 	"rootFolder": "/path/to/videos/",
 	"rootPath": "videos/",
 	"server": "VidStreamer.js/0.1.4",
-	"maxAge": "3600"
+	"maxAge": "3600",
+	"throttle": false
 }

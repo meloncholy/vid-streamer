@@ -11,12 +11,8 @@
 var fs = require("fs");
 var url = require("url");
 var events = require("events");
-var settings = {};
-try {
-  settings = require("konphyg")(__dirname + "/config/")("vidStreamer");
-} catch (e) {
-  console.error(e);
-}
+var settings = require('./config/vidStreamer-sample.json');
+var Throttle = require('throttle');
 
 var handler = new events.EventEmitter();
 
@@ -161,6 +157,11 @@ var vidStreamer = function (req, res) {
 		res.write("FLV" + pack("CCNN", 1, 5, 9, 9));
 	}
 	stream = fs.createReadStream(info.path, { flags: "r", start: info.start, end: info.end });
+
+	if (settings.throttle) {
+		stream = stream.pipe(new Throttle(settings.throttle))
+	}
+
 	stream.pipe(res);
 	return true;
 };
