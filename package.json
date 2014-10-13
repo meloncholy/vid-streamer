@@ -1,7 +1,7 @@
 {
   "name": "vid-streamer",
   "description": "VidStreamer.js: A simple streamer for Flash and other videos. Supports HTTP pseudostreaming and works with JW Player's bitrate switching.",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0-alpha2",
   "author": "Andrew Weeks <andrew@meloncholy.com>",
   "bin": {
     "vid-streamer": "bin/vid-streamer"
