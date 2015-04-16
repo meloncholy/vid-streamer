@@ -247,6 +247,11 @@ var downloadHeader = function (res, info) {
 	header["Last-Modified"] = info.modified.toUTCString();
 	header["Content-Transfer-Encoding"] = "binary";
 	header["Content-Length"] = info.length;
+    if(settings.cors){
+        header["Access-Control-Allow-Origin"] = "*";
+        header["Access-Control-Allow-Headers"] = "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept";
+    }
+    header.Server = settings.server;
 	header.Server = settings.server;
 	
 	res.writeHead(code, header);
