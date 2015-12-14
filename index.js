@@ -139,8 +139,18 @@ var vidStreamer = function (req, res) {
 	if (range !== undefined && (range = range.match(/bytes=(.+)-(.+)?/)) !== null) {
 		// Check range contains numbers and they fit in the file.
 		// Make sure info.start & info.end are numbers (not strings) or stream.pipe errors out if start > 0.
-		info.start = isNumber(range[1]) && range[1] >= 0 && range[1] < info.end ? range[1] - 0 : info.start;
-		info.end = isNumber(range[2]) && range[2] > info.start && range[2] <= info.end ? range[2] - 0 : info.end;
+		if (isNumber(range[1]) && range[1] >= 0 && range[1] < info.end) {
+			info.start = range[1] - 0;
+		}
+		if (isNumber(range[2]) && range[2] > info.start && range[2] <= info.end) {
+			info.end = range[2] - 0;
+		}
+		info.rangeRequest = true;
+	} else if (range !== undefined && (range = range.match(/bytes=-(.+)/)) !== null) {
+		// Check that the requested number of bytes from the end of the file doesn't exceed the file size.
+		if (isNumber(range[1]) && range[1] > 0 && range[1] <= info.size) {
+			info.start = info.size - range[1];
+		}
 		info.rangeRequest = true;
 	} else if (reqUrl.query.start || reqUrl.query.end) {
 		// This is a range request, but doesn't get range headers. So there.
