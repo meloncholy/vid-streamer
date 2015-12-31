@@ -156,6 +156,7 @@ var vidStreamer = function (req, res) {
 	if (info.start > 0 && info.mime === "video/x-flv") {
 		res.write("FLV" + pack("CCNN", 1, 5, 9, 9));
 	}
+	//every times client make a request (even if user seeking), it create new stream. 
 	stream = fs.createReadStream(info.path, { flags: "r", start: info.start, end: info.end });
 
 	if (settings.throttle) {
@@ -163,6 +164,10 @@ var vidStreamer = function (req, res) {
 	}
 
 	stream.pipe(res);
+	res.connection.on('close', function() {
+      	   //close old stream pipe when user seeking.
+      	   stream.close();
+    	});
 	return true;
 };
 
