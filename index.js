@@ -253,9 +253,8 @@ var downloadHeader = function (res, info) {
         header["Access-Control-Allow-Headers"] = "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept";
     }
     header.Server = settings.server;
-	header.Server = settings.server;
-	
-	res.writeHead(code, header);
+    
+    res.writeHead(code, header);
 };
 
 var errorHeader = function (res, code) {
