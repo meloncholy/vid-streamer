@@ -1,3 +1,5 @@
+**This project is not well maintained, we are looking for active contributors that want to take the lead on it, open an issue**
+
 VidStreamer.js
 ==============
 
