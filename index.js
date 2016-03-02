@@ -159,7 +159,7 @@ var vidStreamer = function (req, res) {
 	}
 	stream = fs.createReadStream(info.path, { flags: "r", start: info.start, end: info.end });
 
-	if (settings.throttle) {
+	if (settings.throttle && req.method.toLowerCase() === 'get') {
 		stream = stream.pipe(new Throttle(settings.throttle))
 	}
 
