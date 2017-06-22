@@ -162,6 +162,14 @@ var vidStreamer = function (req, res) {
 		stream = stream.pipe(new Throttle(settings.throttle))
 	}
 
+    res.on('close', function(){
+        stream.close();
+    });
+
+    res.on('finish', function(){
+        stream.close();
+    });
+
 	stream.pipe(res);
 	return true;
 };
