@@ -231,9 +231,13 @@ var downloadHeader = function (res, info) {
 			"Cache-Control": "public; max-age=" + settings.maxAge,
 			Connection: "keep-alive",
 			"Content-Type": info.mime,
-			"Content-Disposition": "inline; filename=" + info.file + ";",
 			"Accept-Ranges": "bytes"
 		};
+		
+		if (settings.insertContentDisposition == undefined || settings.insertContentDisposition){
+			header["Content-Disposition"] = "inline; filename=" + info.file + ";"
+		}
+		    
 
 		if (info.rangeRequest) {
 			// Partial http response
