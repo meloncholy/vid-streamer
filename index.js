@@ -23,6 +23,7 @@ var mimeTypes = {
 	".f4v": "video/mp4",
 	".f4p": "video/mp4",
 	".mp4": "video/mp4",
+	".m4v": "video/x-m4v",
 	".asf": "video/x-ms-asf",
 	".asr": "video/x-ms-asf",
 	".asx": "video/x-ms-asf",

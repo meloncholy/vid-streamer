@@ -15,3 +15,5 @@ npm-debug.log
 
 vidStreamer josie.json
 vidStreamer.json
+
+node_modules
